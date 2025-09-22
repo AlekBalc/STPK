@@ -5,11 +5,23 @@ export class CustomValidationError extends Error {
     property: string;
     constraints: { [type: string]: string } | undefined;
   }[];
-  constructor(errors: ValidationError[]) {
-    super("Validation error");
+  constructor(message: string, errors: ValidationError[]) {
+    super(message);
     this.errors = errors.map((err: ValidationError) => ({
       property: err.property,
       constraints: err.constraints,
     }));
+  }
+}
+
+export class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
+export class EmptyRequestBodyError extends Error {
+  constructor(message: string) {
+    super(message);
   }
 }

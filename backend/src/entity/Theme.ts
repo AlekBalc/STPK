@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-import { IsDefined, IsEmpty } from "class-validator";
+import { IsNotEmpty, IsEmpty, IsString, Length } from "class-validator";
 
 @Entity()
 export class Theme {
@@ -8,6 +8,8 @@ export class Theme {
   id: number;
 
   @Column({ length: 100 })
-  @IsDefined({ message: "Title is required" })
+  @IsNotEmpty({ message: "Title is required" })
+  @IsString({ message: "Title must be a string" })
+  @Length(1, 100, { message: "Title must be between 1 and 100 characters" })
   title: string;
 }
