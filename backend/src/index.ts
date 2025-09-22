@@ -22,6 +22,9 @@ app.use(cors());
 app.use(express.json());
 app.use(invalidJsonHandler);
 app.use("/api", router);
+app.all("*", (req, res) => {
+  res.status(404).send({ message: "Endpoint not found" });
+});
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

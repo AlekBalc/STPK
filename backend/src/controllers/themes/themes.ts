@@ -7,21 +7,17 @@ import {
   validateRequestPathParams,
 } from "src/validationUtils/validateRequest";
 import { GetThemeByIdPathParams } from "./types";
-import { NotFoundError } from "src/validationUtils/errors";
-
-const themeRepository = AppDataSource.getRepository(Theme);
+import { themeRepository } from "./repository";
 
 export const postTheme = async (req: Request, res: Response) => {
   try {
     const validatedRequestBody = await validateRequestBody(req, Theme);
 
-    const result = await themeRepository.insert(validatedRequestBody);
-    const insertedId = result.identifiers[0].id;
+    const result = await themeRepository.create(validatedRequestBody);
 
     res.status(201).send({
       message: "Theme created successfully",
-      ...validatedRequestBody,
-      id: insertedId,
+      ...result,
     });
   } catch (error: any) {
     handleError(error, res);
@@ -34,12 +30,7 @@ export const getThemeById = async (req: Request, res: Response) => {
       req,
       GetThemeByIdPathParams
     );
-    const theme = await themeRepository.findOneBy({
-      id: validatedPathParams.id,
-    });
-    if (!theme) {
-      throw new NotFoundError("Theme not found");
-    }
+    const theme = await themeRepository.get(validatedPathParams.id);
     res.send(theme);
   } catch (error: any) {
     handleError(error, res);
@@ -48,7 +39,7 @@ export const getThemeById = async (req: Request, res: Response) => {
 
 export const getThemes = async (req: Request, res: Response) => {
   try {
-    const themes = await themeRepository.find();
+    const themes = await themeRepository.getAll();
     res.send(themes);
   } catch (error: any) {
     handleError(error, res);
@@ -63,16 +54,11 @@ export const putTheme = async (req: Request, res: Response) => {
     );
     const validatedRequestBody = await validateRequestBody(req, Theme);
 
-    const theme = await themeRepository.findOneBy({
-      id: validatedPathParams.id,
-    });
-    if (!theme) {
-      throw new NotFoundError("Theme not found");
-    }
-    const updatedTheme = await themeRepository.save({
-      ...validatedRequestBody,
-      id: theme.id,
-    });
+    const theme = await themeRepository.get(validatedPathParams.id);
+    const updatedTheme = await themeRepository.update(
+      theme!.id,
+      validatedRequestBody
+    );
     res.send(updatedTheme);
   } catch (error: any) {
     handleError(error, res);
@@ -87,20 +73,12 @@ export const patchTheme = async (req: Request, res: Response) => {
     );
     const validatedRequestBody = await validateRequestBody(req, Theme, true);
 
-    const theme = await themeRepository.findOneBy({
-      id: validatedPathParams.id,
-    });
-    if (!theme) {
-      throw new NotFoundError("Theme not found");
-    }
-    await themeRepository.update(
-      { id: validatedPathParams.id },
+    const theme = await themeRepository.get(validatedPathParams.id);
+    const updatedThemeEntity = await themeRepository.update(
+      theme!.id,
       validatedRequestBody
     );
 
-    const updatedThemeEntity = await themeRepository.findOneBy({
-      id: validatedPathParams.id,
-    });
     res.send(updatedThemeEntity);
   } catch (error: any) {
     handleError(error, res);
@@ -114,16 +92,9 @@ export const deleteTheme = async (req: Request, res: Response) => {
       GetThemeByIdPathParams
     );
 
-    const theme = await themeRepository.findOneBy({
-      id: validatedPathParams.id,
-    });
-    if (!theme) {
-      throw new NotFoundError("Theme not found");
-    }
+    const theme = await themeRepository.get(validatedPathParams.id);
 
-    const deletedTheme = await themeRepository.delete({
-      id: theme.id,
-    });
+    const deletedTheme = await themeRepository.delete(theme!.id);
     res.status(204).send();
   } catch (error: any) {
     handleError(error, res);
