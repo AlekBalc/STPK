@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { IsNotEmpty, IsEmpty, IsString, Length } from "class-validator";
+import { Post } from "./Post";
 
 @Entity()
 export class Theme {
@@ -20,4 +21,7 @@ export class Theme {
     message: "Description must be between 1 and 300 characters",
   })
   description: string;
+
+  @OneToMany(() => Post, (post) => post.theme)
+  posts: Post[];
 }

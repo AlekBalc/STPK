@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "src/data-source";
 import { Theme } from "src/entity/Theme";
 import { handleError } from "src/validationUtils/handleError";
 import {
