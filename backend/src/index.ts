@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import "reflect-metadata";
 import { AppDataSource } from "./data-source";
+import router from "./router";
+import { invalidJsonHandler } from "./middleware/invalid-json-handler";
 dotenv.config();
 
 (function () {
@@ -18,6 +20,8 @@ const port = process.env.SERVER_PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(invalidJsonHandler);
+app.use("/api", router);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
