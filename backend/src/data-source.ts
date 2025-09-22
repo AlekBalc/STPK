@@ -1,7 +1,9 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Theme } from "./entity/Theme.js";
-import { EnvVariables } from "./env-variables.js";
+import { Theme } from "./entity/Theme";
+import { EnvVariables } from "./env-variables";
+import { Post } from "./entity/Post";
+import { Comment } from "./entity/Comment";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -12,7 +14,7 @@ export const AppDataSource = new DataSource({
   database: EnvVariables.databaseName,
   synchronize: EnvVariables.databaseShouldSync,
   logging: true,
-  entities: [Theme],
+  entities: [Theme, Post, Comment],
   subscribers: [],
   migrations: [],
 });
