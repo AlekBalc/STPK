@@ -7,7 +7,7 @@ export const invalidJsonHandler = (
   next: Function
 ) => {
   if (error instanceof SyntaxError) {
-    res.status(422).send({ message: "Invalid JSON" });
+    res.status(422).send({ message: "Invalid request body" });
   } else {
     next();
   }
