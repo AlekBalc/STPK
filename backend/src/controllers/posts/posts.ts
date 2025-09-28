@@ -1,10 +1,5 @@
 import { Request, Response } from "express";
 import { handleError } from "src/validationUtils/handleError";
-// import {
-//   validateRequestBody,
-//   validateRequestPathParams,
-// } from "src/validationUtils/validateRequest";
-// import { GetPostByIdPathParams } from "./types";
 import { postRepository } from "./repository";
 
 import { validateRequest } from "src/validationUtils/validateRequest";
