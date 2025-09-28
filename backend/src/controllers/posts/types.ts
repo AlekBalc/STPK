@@ -7,21 +7,19 @@ import {
   Length,
   ValidateNested,
 } from "class-validator";
-import { BaseRequest } from "src/validationUtils/baseClasses";
-
-export class GetPostByIdPathParams {
-  @IsDefined({ message: "id is required" })
-  @IsPositive({ message: "id must be a positive number" })
-  @IsInt({ message: "id must be an integer" })
-  id: number;
-}
+import {
+  BaseRequest,
+  GetByIdPathParams,
+} from "src/validationUtils/baseClasses";
 
 export class PostPostRequestBody {
   @IsNotEmpty({ message: "Title is required" })
   @IsString({ message: "Title must be a string" })
   @Length(1, 100, { message: "Title must be between 1 and 100 characters" })
   title: string;
+}
 
+export class FullPostPostRequestBody extends PostPostRequestBody {
   @IsNotEmpty({ message: "Theme ID is required" })
   @IsInt({ message: "Theme ID must be an integer" })
   @IsPositive({ message: "Theme ID must be positive" })
@@ -30,5 +28,29 @@ export class PostPostRequestBody {
 
 export class PostPostRequest extends BaseRequest {
   @ValidateNested()
+  declare body: FullPostPostRequestBody;
+}
+
+export class PutPostRequest extends BaseRequest {
+  @ValidateNested()
   declare body: PostPostRequestBody;
+  @ValidateNested()
+  declare params: GetByIdPathParams;
+}
+
+export class PatchPostRequest extends BaseRequest {
+  @ValidateNested()
+  declare body: PostPostRequestBody;
+  @ValidateNested()
+  declare params: GetByIdPathParams;
+}
+
+export class GetPostByIdRequest extends BaseRequest {
+  @ValidateNested()
+  declare params: GetByIdPathParams;
+}
+
+export class DeletePostRequest extends BaseRequest {
+  @ValidateNested()
+  declare params: GetByIdPathParams;
 }

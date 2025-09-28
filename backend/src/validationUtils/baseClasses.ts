@@ -1,8 +1,17 @@
-import { IsDefined, IsInt, IsPositive, ValidateNested } from "class-validator";
+import {
+  IsDefined,
+  IsInt,
+  IsOptional,
+  IsPositive,
+  ValidateNested,
+} from "class-validator";
 
 export abstract class BaseRequest {
+  @IsOptional()
   body?: object;
+  @IsOptional()
   params?: object;
+  @IsOptional()
   query?: object;
 }
 

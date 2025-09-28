@@ -20,7 +20,11 @@ export const validateRequest = async <T extends BaseRequest>(
       enableImplicitConversion: true,
     }
   );
-  const errors = await validate(constructedRequest, { skipMissingProperties });
+  const errors = await validate(constructedRequest, {
+    skipMissingProperties,
+    whitelist: true, // Only allow properties that have validation decorators
+    forbidNonWhitelisted: true, // Throw error if non-whitelisted properties are present
+  });
   if (errors.length > 0) {
     throw new CustomValidationError("Bad request", errors);
   }

@@ -2,8 +2,7 @@ import { AppDataSource } from "src/data-source";
 import { Post } from "src/entity/Post";
 import { NotFoundError } from "src/validationUtils/errors";
 import { Repository } from "typeorm";
-import { themeRepository } from "../themes/repository";
-import { PostPostRequestBody } from "./types";
+import { FullPostPostRequestBody } from "./types";
 
 class PostRepository {
   private repository: Repository<Post>;
@@ -24,7 +23,7 @@ class PostRepository {
     return await this.repository.find();
   }
 
-  async create(postData: PostPostRequestBody): Promise<Post> {
+  async create(postData: FullPostPostRequestBody): Promise<Post> {
     const post = this.repository.create({
       title: postData.title,
       theme: { id: postData.themeId },

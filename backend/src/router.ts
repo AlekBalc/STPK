@@ -8,12 +8,12 @@ import {
   putTheme,
 } from "./controllers/themes/themes";
 import {
-  // deletePost,
-  // getPostById,
-  // getPosts,
-  // patchPost,
+  deletePost,
+  getPostById,
+  getPosts,
+  patchPost,
   postPost,
-  // putPost,
+  putPost,
 } from "./controllers/posts/posts";
 
 const router = express.Router();
@@ -227,158 +227,158 @@ router.delete("/themes/:id", deleteTheme);
  */
 router.post("/posts", postPost);
 
-// /**
-//  * @swagger
-//  * /posts:
-//  *   get:
-//  *     summary: Get all posts
-//  *     tags: [Posts]
-//  *     responses:
-//  *       200:
-//  *         description: List of all posts
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: array
-//  *               items:
-//  *                 $ref: '#/components/schemas/Post'
-//  *       500:
-//  *         $ref: '#/components/responses/ServerError'
-//  */
-// router.get("/posts", getPosts);
+/**
+ * @swagger
+ * /posts:
+ *   get:
+ *     summary: Get all posts
+ *     tags: [Posts]
+ *     responses:
+ *       200:
+ *         description: List of all posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.get("/posts", getPosts);
 
-// /**
-//  * @swagger
-//  * /posts/{id}:
-//  *   get:
-//  *     summary: Get a post by ID
-//  *     tags: [Posts]
-//  *     parameters:
-//  *       - in: path
-//  *         name: id
-//  *         required: true
-//  *         schema:
-//  *           type: integer
-//  *         description: Post ID
-//  *     responses:
-//  *       200:
-//  *         description: Post found
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Post'
-//  *       404:
-//  *         $ref: '#/components/responses/NotFound'
-//  *       500:
-//  *         $ref: '#/components/responses/ServerError'
-//  */
-// router.get("/posts/:id", getPostById);
+/**
+ * @swagger
+ * /posts/{id}:
+ *   get:
+ *     summary: Get a post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Post ID
+ *     responses:
+ *       200:
+ *         description: Post found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.get("/posts/:id", getPostById);
 
-// /**
-//  * @swagger
-//  * /posts/{id}:
-//  *   put:
-//  *     summary: Update a post completely
-//  *     tags: [Posts]
-//  *     parameters:
-//  *       - in: path
-//  *         name: id
-//  *         required: true
-//  *         schema:
-//  *           type: integer
-//  *         description: Post ID
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         application/json:
-//  *           schema:
-//  *             $ref: '#/components/schemas/PostInput'
-//  *     responses:
-//  *       200:
-//  *         description: Post updated successfully
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Post'
-//  *       400:
-//  *         $ref: '#/components/responses/ValidationError'
-//  *       404:
-//  *         $ref: '#/components/responses/NotFound'
-//  *       500:
-//  *         $ref: '#/components/responses/ServerError'
-//  */
-// router.put("/posts/:id", putPost);
+/**
+ * @swagger
+ * /posts/{id}:
+ *   put:
+ *     summary: Update a post completely
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Post ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostInput'
+ *     responses:
+ *       200:
+ *         description: Post updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.put("/posts/:id", putPost);
 
-// /**
-//  * @swagger
-//  * /posts/{id}:
-//  *   patch:
-//  *     summary: Update a post partially
-//  *     tags: [Posts]
-//  *     parameters:
-//  *       - in: path
-//  *         name: id
-//  *         required: true
-//  *         schema:
-//  *           type: integer
-//  *         description: Post ID
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         application/json:
-//  *           schema:
-//  *             type: object
-//  *             properties:
-//  *               title:
-//  *                 type: string
-//  *                 minLength: 1
-//  *                 maxLength: 100
-//  *               themeId:
-//  *                 type: integer
-//  *     responses:
-//  *       200:
-//  *         description: Post updated successfully
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Post'
-//  *       400:
-//  *         $ref: '#/components/responses/ValidationError'
-//  *       404:
-//  *         $ref: '#/components/responses/NotFound'
-//  *       500:
-//  *         $ref: '#/components/responses/ServerError'
-//  */
-// router.patch("/posts/:id", patchPost);
+/**
+ * @swagger
+ * /posts/{id}:
+ *   patch:
+ *     summary: Update a post partially
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Post ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 minLength: 1
+ *                 maxLength: 100
+ *               themeId:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Post updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.patch("/posts/:id", patchPost);
 
-// /**
-//  * @swagger
-//  * /posts/{id}:
-//  *   delete:
-//  *     summary: Delete a post
-//  *     tags: [Posts]
-//  *     parameters:
-//  *       - in: path
-//  *         name: id
-//  *         required: true
-//  *         schema:
-//  *           type: integer
-//  *         description: Post ID
-//  *     responses:
-//  *       200:
-//  *         description: Post deleted successfully
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 message:
-//  *                   type: string
-//  *                   example: Post deleted successfully
-//  *       404:
-//  *         $ref: '#/components/responses/NotFound'
-//  *       500:
-//  *         $ref: '#/components/responses/ServerError'
-//  */
-// router.delete("/posts/:id", deletePost);
+/**
+ * @swagger
+ * /posts/{id}:
+ *   delete:
+ *     summary: Delete a post
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Post ID
+ *     responses:
+ *       200:
+ *         description: Post deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Post deleted successfully
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.delete("/posts/:id", deletePost);
 export default router;
