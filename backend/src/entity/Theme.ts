@@ -14,7 +14,7 @@ export class Theme {
   @Length(1, 100, { message: "Title must be between 1 and 100 characters" })
   title: string;
 
-  @Column({ length: 100 })
+  @Column({ length: 300 })
   @IsNotEmpty({ message: "Description is required" })
   @IsString({ message: "Description must be a string" })
   @Length(1, 300, {

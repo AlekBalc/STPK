@@ -1,18 +1,20 @@
 import { Request, Response } from "express";
-import { Theme } from "src/entity/Theme";
 import { handleError } from "src/validationUtils/handleError";
+import { validateRequest } from "src/validationUtils/validateRequest";
 import {
-  validateRequestBody,
-  validateRequestPathParams,
-} from "src/validationUtils/validateRequest";
-import { GetThemeByIdPathParams } from "./types";
+  DeleteThemeRequest,
+  GetThemeByIdRequest,
+  PatchThemeRequest,
+  PostThemeRequest,
+  PutThemeRequest,
+} from "./types";
 import { themeRepository } from "./repository";
 
 export const postTheme = async (req: Request, res: Response) => {
   try {
-    const validatedRequestBody = await validateRequestBody(req, Theme);
+    const validatedRequest = await validateRequest(req, PostThemeRequest);
 
-    const result = await themeRepository.create(validatedRequestBody);
+    const result = await themeRepository.create(validatedRequest.body);
 
     res.status(201).send({
       message: "Theme created successfully",
@@ -25,11 +27,8 @@ export const postTheme = async (req: Request, res: Response) => {
 
 export const getThemeById = async (req: Request, res: Response) => {
   try {
-    const validatedPathParams = await validateRequestPathParams(
-      req,
-      GetThemeByIdPathParams
-    );
-    const theme = await themeRepository.get(validatedPathParams.id);
+    const validatedRequest = await validateRequest(req, GetThemeByIdRequest);
+    const theme = await themeRepository.get(validatedRequest.params.id);
     res.send(theme);
   } catch (error: any) {
     handleError(error, res);
@@ -47,16 +46,12 @@ export const getThemes = async (req: Request, res: Response) => {
 
 export const putTheme = async (req: Request, res: Response) => {
   try {
-    const validatedPathParams = await validateRequestPathParams(
-      req,
-      GetThemeByIdPathParams
-    );
-    const validatedRequestBody = await validateRequestBody(req, Theme);
+    const validatedRequest = await validateRequest(req, PutThemeRequest);
 
-    const theme = await themeRepository.get(validatedPathParams.id);
+    const theme = await themeRepository.get(validatedRequest.params.id);
     const updatedTheme = await themeRepository.update(
       theme!.id,
-      validatedRequestBody
+      validatedRequest.body
     );
     res.send(updatedTheme);
   } catch (error: any) {
@@ -66,16 +61,16 @@ export const putTheme = async (req: Request, res: Response) => {
 
 export const patchTheme = async (req: Request, res: Response) => {
   try {
-    const validatedPathParams = await validateRequestPathParams(
+    const validatedRequest = await validateRequest(
       req,
-      GetThemeByIdPathParams
+      PatchThemeRequest,
+      true
     );
-    const validatedRequestBody = await validateRequestBody(req, Theme, true);
 
-    const theme = await themeRepository.get(validatedPathParams.id);
+    const theme = await themeRepository.get(validatedRequest.params.id);
     const updatedThemeEntity = await themeRepository.update(
       theme!.id,
-      validatedRequestBody
+      validatedRequest.body
     );
 
     res.send(updatedThemeEntity);
@@ -86,12 +81,9 @@ export const patchTheme = async (req: Request, res: Response) => {
 
 export const deleteTheme = async (req: Request, res: Response) => {
   try {
-    const validatedPathParams = await validateRequestPathParams(
-      req,
-      GetThemeByIdPathParams
-    );
+    const validatedRequest = await validateRequest(req, DeleteThemeRequest);
 
-    const theme = await themeRepository.get(validatedPathParams.id);
+    const theme = await themeRepository.get(validatedRequest.params.id);
 
     const deletedTheme = await themeRepository.delete(theme!.id);
     res.status(204).send();

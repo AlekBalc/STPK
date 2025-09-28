@@ -1,34 +1,28 @@
 import { ClassConstructor, plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import { CustomValidationError, EmptyRequestBodyError } from "./errors";
+import { CustomValidationError } from "./errors";
 import { Request } from "express";
+import { BaseRequest } from "./baseClasses";
 
-export const validateRequestBody = async <T extends object>(
+export const validateRequest = async <T extends BaseRequest>(
   request: Request,
   type: ClassConstructor<T>,
   skipMissingProperties = false
 ): Promise<T> => {
-  if (!request.body || Object.keys(request.body).length === 0) {
-    throw new EmptyRequestBodyError("Empty request body");
-  }
-  const body = plainToInstance(type, request.body);
-  const errors = await validate(body, { skipMissingProperties });
+  const constructedRequest = plainToInstance(
+    type,
+    {
+      body: request.body,
+      params: request.params,
+      query: request.query,
+    },
+    {
+      enableImplicitConversion: true,
+    }
+  );
+  const errors = await validate(constructedRequest, { skipMissingProperties });
   if (errors.length > 0) {
-    throw new CustomValidationError("Invalid request body", errors);
+    throw new CustomValidationError("Bad request", errors);
   }
-  return body;
-};
-
-export const validateRequestPathParams = async <T extends object>(
-  request: Request,
-  type: ClassConstructor<T>
-): Promise<T> => {
-  const pathParams = plainToInstance(type, request.params, {
-    enableImplicitConversion: true,
-  });
-  const errors = await validate(pathParams);
-  if (errors.length > 0) {
-    throw new CustomValidationError("Invalid request path parameters", errors);
-  }
-  return pathParams;
+  return constructedRequest;
 };

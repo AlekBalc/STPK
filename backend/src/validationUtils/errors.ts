@@ -7,12 +7,21 @@ export class CustomValidationError extends Error {
   }[];
   constructor(message: string, errors: ValidationError[]) {
     super(message);
-    this.errors = errors.map((err: ValidationError) => ({
-      property: err.property,
-      constraints: err.constraints,
-    }));
+    console.log(errors);
+    this.errors = mapErrors(errors);
   }
 }
+
+const mapErrors = (errors: ValidationError[]): any => {
+  return errors.map((err: ValidationError) => ({
+    property: err.property,
+    constraints: err.constraints,
+    children:
+      err.children && err.children.length > 0
+        ? mapErrors(err.children)
+        : undefined,
+  }));
+};
 
 export class NotFoundError extends Error {
   constructor(message: string) {
