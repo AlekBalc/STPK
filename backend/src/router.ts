@@ -7,14 +7,14 @@ import {
   postTheme,
   putTheme,
 } from "./controllers/themes/themes";
-// import {
-//   deletePost,
-//   getPostById,
-//   getPosts,
-//   patchPost,
-//   postPost,
-//   putPost,
-// } from "./controllers/posts/posts";
+import {
+  // deletePost,
+  // getPostById,
+  // getPosts,
+  // patchPost,
+  postPost,
+  // putPost,
+} from "./controllers/posts/posts";
 
 const router = express.Router();
 
@@ -201,31 +201,31 @@ router.patch("/themes/:id", patchTheme);
  */
 router.delete("/themes/:id", deleteTheme);
 
-// /**
-//  * @swagger
-//  * /posts:
-//  *   post:
-//  *     summary: Create a new post
-//  *     tags: [Posts]
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         application/json:
-//  *           schema:
-//  *             $ref: '#/components/schemas/PostInput'
-//  *     responses:
-//  *       201:
-//  *         description: Post created successfully
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               $ref: '#/components/schemas/Post'
-//  *       400:
-//  *         $ref: '#/components/responses/ValidationError'
-//  *       500:
-//  *         $ref: '#/components/responses/ServerError'
-//  */
-// router.post("/posts", postPost);
+/**
+ * @swagger
+ * /posts:
+ *   post:
+ *     summary: Create a new post
+ *     tags: [Posts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostInput'
+ *     responses:
+ *       201:
+ *         description: Post created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
+router.post("/posts", postPost);
 
 // /**
 //  * @swagger

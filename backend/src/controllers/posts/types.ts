@@ -7,18 +7,13 @@ import {
   Length,
   ValidateNested,
 } from "class-validator";
-import { BaseRequest } from "src/validationUtils/validateRequest";
+import { BaseRequest } from "src/validationUtils/baseClasses";
 
 export class GetPostByIdPathParams {
   @IsDefined({ message: "id is required" })
   @IsPositive({ message: "id must be a positive number" })
   @IsInt({ message: "id must be an integer" })
   id: number;
-}
-
-export class PostPostRequest extends BaseRequest {
-  @ValidateNested()
-  declare body: PostPostRequestBody;
 }
 
 export class PostPostRequestBody {
@@ -31,4 +26,9 @@ export class PostPostRequestBody {
   @IsInt({ message: "Theme ID must be an integer" })
   @IsPositive({ message: "Theme ID must be positive" })
   themeId: number;
+}
+
+export class PostPostRequest extends BaseRequest {
+  @ValidateNested()
+  declare body: PostPostRequestBody;
 }

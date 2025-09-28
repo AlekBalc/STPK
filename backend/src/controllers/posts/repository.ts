@@ -3,6 +3,7 @@ import { Post } from "src/entity/Post";
 import { NotFoundError } from "src/validationUtils/errors";
 import { Repository } from "typeorm";
 import { themeRepository } from "../themes/repository";
+import { PostPostRequestBody } from "./types";
 
 class PostRepository {
   private repository: Repository<Post>;
@@ -23,11 +24,20 @@ class PostRepository {
     return await this.repository.find();
   }
 
-  async create(postData: Partial<Post>): Promise<Post> {
-    const theme = await themeRepository.get(postData.themeId!);
-    const result = await this.repository.insert({ ...postData, theme: theme! });
-    const insertedId = result.identifiers[0].id;
-    return (await this.get(insertedId)) as Post;
+  async create(postData: PostPostRequestBody): Promise<Post> {
+    const post = this.repository.create({
+      title: postData.title,
+      theme: { id: postData.themeId },
+    });
+
+    try {
+      return await this.repository.save(post);
+    } catch (error: any) {
+      if (error.code === "ER_NO_REFERENCED_ROW_2" || error.code === "23503") {
+        throw new NotFoundError("Theme not found");
+      }
+      throw error;
+    }
   }
 
   async update(id: number, postData: Partial<Post>): Promise<Post | null> {

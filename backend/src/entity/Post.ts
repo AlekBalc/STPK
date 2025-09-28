@@ -27,12 +27,6 @@ export class Post {
   @Length(1, 100, { message: "Title must be between 1 and 100 characters" })
   title: string;
 
-  @Column({ nullable: false })
-  @IsNotEmpty({ message: "Theme ID is required" })
-  @IsInt({ message: "Theme ID must be an integer" })
-  @IsPositive({ message: "Theme ID must be positive" })
-  themeId: number;
-
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
 

@@ -1,27 +1,30 @@
-// import { Request, Response } from "express";
-// import { handleError } from "src/validationUtils/handleError";
+import { Request, Response } from "express";
+import { handleError } from "src/validationUtils/handleError";
 // import {
 //   validateRequestBody,
 //   validateRequestPathParams,
 // } from "src/validationUtils/validateRequest";
 // import { GetPostByIdPathParams } from "./types";
-// import { postRepository } from "./repository";
+import { postRepository } from "./repository";
 // import { Post } from "src/entity/Post";
 
-// export const postPost = async (req: Request, res: Response) => {
-//   try {
-//     const validatedRequestBody = await validateRequestBody(req, Post);
+import { validateRequest } from "src/validationUtils/validateRequest";
+import { PostPostRequest } from "./types";
 
-//     const result = await postRepository.create(validatedRequestBody);
+export const postPost = async (req: Request, res: Response) => {
+  try {
+    const validatedRequest = await validateRequest(req, PostPostRequest);
 
-//     res.status(201).send({
-//       message: "Post created successfully",
-//       ...result,
-//     });
-//   } catch (error: any) {
-//     handleError(error, res);
-//   }
-// };
+    const result = await postRepository.create(validatedRequest.body);
+
+    res.status(201).send({
+      message: "Post created successfully",
+      ...result,
+    });
+  } catch (error: any) {
+    handleError(error, res);
+  }
+};
 
 // export const getPostById = async (req: Request, res: Response) => {
 //   try {
