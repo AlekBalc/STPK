@@ -5,8 +5,8 @@ import "reflect-metadata";
 import { AppDataSource } from "./data-source";
 import router from "./router";
 import { invalidJsonHandler } from "./middleware/invalid-json-handler";
+import { emptyBodyHandler } from "./middleware/empty-body-handler";
 import { setupSwagger } from "./swagger";
-import { emptyBodyHandler } from "./middleware/empty-json-handler";
 dotenv.config();
 
 (function () {
