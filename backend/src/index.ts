@@ -6,6 +6,7 @@ import { AppDataSource } from "./data-source";
 import router from "./router";
 import { invalidJsonHandler } from "./middleware/invalid-json-handler";
 import { setupSwagger } from "./swagger";
+import { emptyBodyHandler } from "./middleware/empty-json-handler";
 dotenv.config();
 
 (function () {
@@ -22,6 +23,7 @@ const port = process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(invalidJsonHandler);
+app.use(emptyBodyHandler);
 setupSwagger(app);
 
 app.use("/api", router);

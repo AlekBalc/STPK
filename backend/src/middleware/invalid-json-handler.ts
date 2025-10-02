@@ -1,13 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const invalidJsonHandler = (
   error: Error,
   req: Request,
   res: Response,
-  next: Function
+  next: NextFunction
 ) => {
   if (error instanceof SyntaxError) {
-    res.status(422).send({ message: "Invalid request body" });
+    res.status(422).send({ message: "Invalid request body json" });
   } else {
     next();
   }
