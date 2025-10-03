@@ -31,10 +31,11 @@ class ThemeRepository {
     const currentPageSize = pagination.pageSize || DEFAULT_PAGE_SIZE;
     const skip = (currentPage - 1) * currentPageSize;
 
-    const [themes, total] = await this.repository.findAndCount({
+    const [themes] = await this.repository.findAndCount({
       skip: skip,
       take: currentPageSize,
     });
+    const total = await this.repository.count();
 
     const totalPages = Math.ceil(total / currentPageSize) || 1;
     if (themes.length === 0 && total > 0) {

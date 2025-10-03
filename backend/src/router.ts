@@ -84,18 +84,9 @@ router.post("/themes", postTheme);
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Theme'
- *                 total:
- *                   type: integer
- *                   description: Total number of themes
- *                 page:
- *                   type: integer
- *                   description: Current page number
- *                 pageSize:
- *                   type: integer
- *                   description: Number of items per page
- *                 totalPages:
- *                   type: integer
- *                   description: Total number of pages
+ *                 pagination:
+ *                   type: object
+ *                   $ref: '#/components/schemas/Pagination'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       500:
@@ -278,9 +269,15 @@ router.post("/posts", postPost);
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Post'
+ *               type: object
+ *               properties:
+ *                 posts:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Post'
+ *                 pagination:
+ *                   type: object
+ *                   $ref: '#/components/schemas/Pagination'
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */
@@ -459,9 +456,15 @@ router.post("/comments", postComment);
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Comment'
+ *               type: object
+ *               properties:
+ *                 comments:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Comment'
+ *                 pagination:
+ *                   type: object
+ *                   $ref: '#/components/schemas/Pagination'
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */

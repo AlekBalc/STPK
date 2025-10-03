@@ -32,11 +32,12 @@ class CommentRepository {
     const currentPageSize = pagination.pageSize || DEFAULT_PAGE_SIZE;
     const skip = (currentPage - 1) * currentPageSize;
 
-    const [comments, total] = await this.repository.findAndCount({
+    const [comments] = await this.repository.findAndCount({
       skip: skip,
       take: currentPageSize,
     });
 
+    const total = await this.repository.count();
     const totalPages = Math.ceil(total / currentPageSize) || 1;
     if (comments.length === 0 && total > 0) {
       throw new PageOutOfRangeError(currentPage, totalPages);

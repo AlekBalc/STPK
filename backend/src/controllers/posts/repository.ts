@@ -32,11 +32,12 @@ class PostRepository {
     const currentPageSize = pagination.pageSize || DEFAULT_PAGE_SIZE;
     const skip = (currentPage - 1) * currentPageSize;
 
-    const [posts, total] = await this.repository.findAndCount({
+    const [posts] = await this.repository.findAndCount({
       skip: skip,
       take: currentPageSize,
     });
 
+    const total = await this.repository.count();
     const totalPages = Math.ceil(total / currentPageSize) || 1;
     if (posts.length === 0 && total > 0) {
       throw new PageOutOfRangeError(currentPage, totalPages);

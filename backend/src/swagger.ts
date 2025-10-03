@@ -174,6 +174,31 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        Pagination: {
+          type: "object",
+          properties: {
+            total: {
+              type: "integer",
+              description: "Total number of items",
+              example: 50,
+            },
+            page: {
+              type: "integer",
+              description: "Current page number",
+              example: 1,
+            },
+            pageSize: {
+              type: "integer",
+              description: "Number of items per page",
+              example: 10,
+            },
+            totalPages: {
+              type: "integer",
+              description: "Total number of pages",
+              example: 5,
+            },
+          },
+        },
       },
       responses: {
         NotFound: {
