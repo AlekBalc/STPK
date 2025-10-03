@@ -4,6 +4,7 @@ import { validateRequest } from "src/validationUtils/validateRequest";
 import {
   DeleteThemeRequest,
   GetThemeByIdRequest,
+  GetThemesRequest,
   PatchThemeRequest,
   PostThemeRequest,
   PutThemeRequest,
@@ -37,8 +38,10 @@ export const getThemeById = async (req: Request, res: Response) => {
 
 export const getThemes = async (req: Request, res: Response) => {
   try {
-    const themes = await themeRepository.getAll();
-    res.send(themes);
+    const validatedRequest = await validateRequest(req, GetThemesRequest);
+
+    const result = await themeRepository.getAll(validatedRequest.query);
+    res.send(result);
   } catch (error: any) {
     handleError(error, res);
   }

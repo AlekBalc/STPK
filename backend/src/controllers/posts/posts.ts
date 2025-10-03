@@ -6,6 +6,7 @@ import { validateRequest } from "src/validationUtils/validateRequest";
 import {
   DeletePostRequest,
   GetPostByIdRequest,
+  GetPostsRequest,
   PatchPostRequest,
   PostPostRequest,
   PutPostRequest,
@@ -38,8 +39,10 @@ export const getPostById = async (req: Request, res: Response) => {
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await postRepository.getAll();
-    res.send(posts);
+    const validatedRequest = await validateRequest(req, GetPostsRequest);
+
+    const result = await postRepository.getAll(validatedRequest.query);
+    res.send(result);
   } catch (error: any) {
     handleError(error, res);
   }

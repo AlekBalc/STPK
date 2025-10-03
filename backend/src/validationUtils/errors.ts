@@ -34,3 +34,9 @@ export class EmptyRequestBodyError extends Error {
     super(message);
   }
 }
+
+export class PageOutOfRangeError extends Error {
+  constructor(requestedPage: number, maxPage: number) {
+    super(`Page ${requestedPage} is out of range. Maximum page is ${maxPage}.`);
+  }
+}

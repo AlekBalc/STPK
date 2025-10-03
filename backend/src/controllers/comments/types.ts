@@ -10,6 +10,7 @@ import {
 import {
   BaseRequest,
   GetByIdPathParams,
+  PaginationQueryParams,
 } from "src/validationUtils/baseClasses";
 
 export class PostCommentRequestBody {
@@ -48,6 +49,11 @@ export class PatchCommentRequest extends BaseRequest {
 export class GetCommentByIdRequest extends BaseRequest {
   @ValidateNested()
   declare params: GetByIdPathParams;
+}
+
+export class GetCommentsRequest extends BaseRequest {
+  @ValidateNested()
+  declare query: PaginationQueryParams;
 }
 
 export class DeleteCommentRequest extends BaseRequest {

@@ -4,6 +4,7 @@ import {
   CustomValidationError,
   EmptyRequestBodyError,
   NotFoundError,
+  PageOutOfRangeError,
 } from "./errors";
 
 export const handleError = (error: Error, res: Response) => {
@@ -20,6 +21,11 @@ export const handleError = (error: Error, res: Response) => {
   }
   if (error instanceof EmptyRequestBodyError) {
     return res.status(422).json({
+      message: error.message,
+    });
+  }
+  if (error instanceof PageOutOfRangeError) {
+    return res.status(400).json({
       message: error.message,
     });
   }

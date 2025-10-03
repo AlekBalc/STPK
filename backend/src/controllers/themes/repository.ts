@@ -1,7 +1,12 @@
 import { AppDataSource } from "src/data-source";
 import { Theme } from "src/entity/Theme";
-import { NotFoundError } from "src/validationUtils/errors";
+import { NotFoundError, PageOutOfRangeError } from "src/validationUtils/errors";
 import { Repository } from "typeorm";
+import { DEFAULT_PAGE_SIZE } from "src/constants";
+import {
+  Pagination,
+  PaginationQueryParams,
+} from "src/validationUtils/baseClasses";
 
 class ThemeRepository {
   private repository: Repository<Theme>;
@@ -18,8 +23,33 @@ class ThemeRepository {
     return theme;
   }
 
-  async getAll(): Promise<Theme[]> {
-    return await this.repository.find();
+  async getAll(pagination: PaginationQueryParams): Promise<{
+    themes: Theme[];
+    pagination: Pagination;
+  }> {
+    const currentPage = pagination.page || 1;
+    const currentPageSize = pagination.pageSize || DEFAULT_PAGE_SIZE;
+    const skip = (currentPage - 1) * currentPageSize;
+
+    const [themes, total] = await this.repository.findAndCount({
+      skip: skip,
+      take: currentPageSize,
+    });
+
+    const totalPages = Math.ceil(total / currentPageSize) || 1;
+    if (themes.length === 0 && total > 0) {
+      throw new PageOutOfRangeError(currentPage, totalPages);
+    }
+
+    return {
+      themes,
+      pagination: {
+        total,
+        page: currentPage,
+        pageSize: currentPageSize,
+        totalPages,
+      },
+    };
   }
 
   async create(themeData: Partial<Theme>): Promise<Theme> {

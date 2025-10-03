@@ -1,8 +1,13 @@
 import { AppDataSource } from "src/data-source";
 import { Comment } from "src/entity/Comment";
-import { NotFoundError } from "src/validationUtils/errors";
+import { NotFoundError, PageOutOfRangeError } from "src/validationUtils/errors";
 import { Repository } from "typeorm";
 import { FullPostCommentRequestBody } from "./types";
+import { DEFAULT_PAGE_SIZE } from "src/constants";
+import {
+  Pagination,
+  PaginationQueryParams,
+} from "src/validationUtils/baseClasses";
 
 class CommentRepository {
   private repository: Repository<Comment>;
@@ -19,8 +24,33 @@ class CommentRepository {
     return comment;
   }
 
-  async getAll(): Promise<Comment[]> {
-    return await this.repository.find();
+  async getAll(pagination: PaginationQueryParams): Promise<{
+    comments: Comment[];
+    pagination: Pagination;
+  }> {
+    const currentPage = pagination.page || 1;
+    const currentPageSize = pagination.pageSize || DEFAULT_PAGE_SIZE;
+    const skip = (currentPage - 1) * currentPageSize;
+
+    const [comments, total] = await this.repository.findAndCount({
+      skip: skip,
+      take: currentPageSize,
+    });
+
+    const totalPages = Math.ceil(total / currentPageSize) || 1;
+    if (comments.length === 0 && total > 0) {
+      throw new PageOutOfRangeError(currentPage, totalPages);
+    }
+
+    return {
+      comments,
+      pagination: {
+        total,
+        page: currentPage,
+        pageSize: currentPageSize,
+        totalPages,
+      },
+    };
   }
 
   async create(commentData: FullPostCommentRequestBody): Promise<Comment> {

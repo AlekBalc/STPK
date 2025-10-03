@@ -1,8 +1,13 @@
 import { AppDataSource } from "src/data-source";
 import { Post } from "src/entity/Post";
-import { NotFoundError } from "src/validationUtils/errors";
+import { NotFoundError, PageOutOfRangeError } from "src/validationUtils/errors";
 import { Repository } from "typeorm";
 import { FullPostPostRequestBody } from "./types";
+import { DEFAULT_PAGE_SIZE } from "src/constants";
+import {
+  Pagination,
+  PaginationQueryParams,
+} from "src/validationUtils/baseClasses";
 
 class PostRepository {
   private repository: Repository<Post>;
@@ -19,8 +24,33 @@ class PostRepository {
     return post;
   }
 
-  async getAll(): Promise<Post[]> {
-    return await this.repository.find();
+  async getAll(pagination: PaginationQueryParams): Promise<{
+    posts: Post[];
+    pagination: Pagination;
+  }> {
+    const currentPage = pagination.page || 1;
+    const currentPageSize = pagination.pageSize || DEFAULT_PAGE_SIZE;
+    const skip = (currentPage - 1) * currentPageSize;
+
+    const [posts, total] = await this.repository.findAndCount({
+      skip: skip,
+      take: currentPageSize,
+    });
+
+    const totalPages = Math.ceil(total / currentPageSize) || 1;
+    if (posts.length === 0 && total > 0) {
+      throw new PageOutOfRangeError(currentPage, totalPages);
+    }
+
+    return {
+      posts,
+      pagination: {
+        total,
+        page: currentPage,
+        pageSize: currentPageSize,
+        totalPages,
+      },
+    };
   }
 
   async create(postData: FullPostPostRequestBody): Promise<Post> {

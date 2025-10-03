@@ -2,14 +2,18 @@ import {
   IsDefined,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsPositive,
   IsString,
   Length,
   ValidateNested,
+  Min,
+  Max,
 } from "class-validator";
 import {
   BaseRequest,
   GetByIdPathParams,
+  PaginationQueryParams,
 } from "src/validationUtils/baseClasses";
 
 export class ThemeRequestBody {
@@ -53,4 +57,9 @@ export class PostThemeRequest extends BaseRequest {
 export class GetThemeByIdRequest extends BaseRequest {
   @ValidateNested()
   declare params: GetByIdPathParams;
+}
+
+export class GetThemesRequest extends BaseRequest {
+  @ValidateNested()
+  declare query: PaginationQueryParams;
 }

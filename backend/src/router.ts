@@ -56,17 +56,48 @@ router.post("/themes", postTheme);
  * @swagger
  * /themes:
  *   get:
- *     summary: Get all themes
+ *     summary: Get all themes with pagination
  *     tags: [Themes]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Page number (default is 1)
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *         description: Number of items per page (default is 10)
  *     responses:
  *       200:
- *         description: List of all themes
+ *         description: Paginated list of themes
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Theme'
+ *               type: object
+ *               properties:
+ *                 themes:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Theme'
+ *                 total:
+ *                   type: integer
+ *                   description: Total number of themes
+ *                 page:
+ *                   type: integer
+ *                   description: Current page number
+ *                 pageSize:
+ *                   type: integer
+ *                   description: Number of items per page
+ *                 totalPages:
+ *                   type: integer
+ *                   description: Total number of pages
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */

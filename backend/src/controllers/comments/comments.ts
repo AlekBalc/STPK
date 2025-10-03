@@ -5,6 +5,7 @@ import { validateRequest } from "src/validationUtils/validateRequest";
 import {
   DeleteCommentRequest,
   GetCommentByIdRequest,
+  GetCommentsRequest,
   PatchCommentRequest,
   PostCommentRequest,
   PutCommentRequest,
@@ -37,8 +38,10 @@ export const getCommentById = async (req: Request, res: Response) => {
 
 export const getComments = async (req: Request, res: Response) => {
   try {
-    const comments = await commentRepository.getAll();
-    res.send(comments);
+    const validatedRequest = await validateRequest(req, GetCommentsRequest);
+
+    const result = await commentRepository.getAll(validatedRequest.query);
+    res.send(result);
   } catch (error: any) {
     handleError(error, res);
   }

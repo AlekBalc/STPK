@@ -10,6 +10,7 @@ import {
 import {
   BaseRequest,
   GetByIdPathParams,
+  PaginationQueryParams,
 } from "src/validationUtils/baseClasses";
 
 export class PostPostRequestBody {
@@ -48,6 +49,11 @@ export class PatchPostRequest extends BaseRequest {
 export class GetPostByIdRequest extends BaseRequest {
   @ValidateNested()
   declare params: GetByIdPathParams;
+}
+
+export class GetPostsRequest extends BaseRequest {
+  @ValidateNested()
+  declare query: PaginationQueryParams;
 }
 
 export class DeletePostRequest extends BaseRequest {
