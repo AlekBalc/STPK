@@ -70,6 +70,29 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        Comment: {
+          type: "object",
+          required: ["content", "postId"],
+          properties: {
+            id: {
+              type: "integer",
+              description: "Auto-generated unique identifier",
+              readOnly: true,
+            },
+            content: {
+              type: "string",
+              minLength: 1,
+              maxLength: 100,
+              description: "Comment content",
+              example: "This is a great post!",
+            },
+            postId: {
+              type: "integer",
+              description: "ID of the post this comment belongs to",
+              example: 1,
+            },
+          },
+        },
         ThemeInput: {
           type: "object",
           required: ["title", "description"],
@@ -104,6 +127,24 @@ const options: swaggerJsdoc.Options = {
             themeId: {
               type: "integer",
               description: "ID of the theme this post belongs to",
+              example: 1,
+            },
+          },
+        },
+        CommentInput: {
+          type: "object",
+          required: ["content", "postId"],
+          properties: {
+            content: {
+              type: "string",
+              minLength: 1,
+              maxLength: 100,
+              description: "Comment content",
+              example: "This is a great post!",
+            },
+            postId: {
+              type: "integer",
+              description: "ID of the post this comment belongs to",
               example: 1,
             },
           },

@@ -481,12 +481,7 @@ router.get("/comments/:id", getCommentById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *                 minLength: 1
- *                 maxLength: 100
+ *             $ref: '#/components/schemas/CommentInput'
  *     responses:
  *       200:
  *         description: Comment updated successfully
@@ -523,7 +518,7 @@ router.put("/comments/:id", putComment);
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               content:
  *                 type: string
  *                 minLength: 1
  *                 maxLength: 100
