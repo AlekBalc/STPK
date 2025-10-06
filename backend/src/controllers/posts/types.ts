@@ -51,6 +51,11 @@ export class GetPostByIdRequest extends BaseRequest {
   declare params: GetByIdPathParams;
 }
 
+export class GetCommentByPostRequest extends BaseRequest {
+  @ValidateNested()
+  declare params: GetByIdPathParams;
+}
+
 export class GetPostsRequest extends BaseRequest {
   @ValidateNested()
   declare query: PaginationQueryParams;

@@ -5,6 +5,7 @@ import { postRepository } from "./repository";
 import { validateRequest } from "src/validationUtils/validateRequest";
 import {
   DeletePostRequest,
+  GetCommentByPostRequest,
   GetPostByIdRequest,
   GetPostsRequest,
   PatchPostRequest,
@@ -87,6 +88,16 @@ export const deletePost = async (req: Request, res: Response) => {
 
     const deletedPost = await postRepository.delete(post!.id);
     res.status(204).send();
+  } catch (error: any) {
+    handleError(error, res);
+  }
+};
+
+export const getCommentsByPost = async (req: Request, res: Response) => {
+  try {
+    const validatedRequest = await validateRequest(req, GetCommentByPostRequest);
+    const post = await postRepository.getPostComments(validatedRequest.params.id);
+    res.send(post);
   } catch (error: any) {
     handleError(error, res);
   }

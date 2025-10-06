@@ -9,6 +9,7 @@ import {
 } from "./controllers/themes/themes";
 import {
   deletePost,
+  getCommentsByPost,
   getPostById,
   getPosts,
   patchPost,
@@ -594,5 +595,7 @@ router.patch("/comments/:id", patchComment);
  *         $ref: '#/components/responses/ServerError'
  */
 router.delete("/comments/:id", deleteComment);
+
+router.get("/posts/:id/comments", getCommentsByPost)
 
 export default router;

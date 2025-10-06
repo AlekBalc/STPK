@@ -24,6 +24,17 @@ class PostRepository {
     return post;
   }
 
+  async getPostComments(id: number): Promise<Post | null> {
+    const post = await this.repository.findOne({
+      where: { id },
+      relations: ['comments']
+    });
+    if (!post) {
+      throw new NotFoundError("Post not found");
+    }
+    return post;
+  }
+
   async getAll(pagination: PaginationQueryParams): Promise<{
     posts: Post[];
     pagination: Pagination;
