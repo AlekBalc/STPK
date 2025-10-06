@@ -149,6 +149,23 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        CommentWithoutPostId: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              description: "Auto-generated unique identifier",
+              readOnly: true,
+            },
+            content: {
+              type: "string",
+              minLength: 1,
+              maxLength: 100,
+              description: "Comment content",
+              example: "This is a great post!",
+            },
+          },
+        },
         Error: {
           type: "object",
           properties: {

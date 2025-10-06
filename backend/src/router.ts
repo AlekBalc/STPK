@@ -596,6 +596,40 @@ router.patch("/comments/:id", patchComment);
  */
 router.delete("/comments/:id", deleteComment);
 
+/**
+ * @swagger
+ * /posts/{id}/comments:
+ *   get:
+ *     summary: Get all post comments
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Post ID
+ *     responses:
+ *       200:
+ *         description: List of all post comments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 comments:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/CommentWithoutPostId'
+ *                 title:
+ *                   type: string
+ *                 id:
+ *                   type: integer
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/ServerError'
+ */
 router.get("/posts/:id/comments", getCommentsByPost)
 
 export default router;
